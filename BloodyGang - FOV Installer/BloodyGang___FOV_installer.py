@@ -16,22 +16,25 @@ root = Tk()
 root.withdraw()
 discord = "https://discord.gg/GCBvSRdx8y"
 fovlinkLoad = requests.get('https://bloodygang.serveblog.net/index.php/s/N4jQosCBL5SPWfi/download')
+dbd = ("C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight")
 
 
 #Determines the location where DeadByDaylight is curently installed. (Working)
 def selectGame():
-    root.iconbitmap("C:/Users/wissm/OneDrive/Bilder/ICO/BG.ico")
-    root.filename = filedialog.askopenfilename(initialdir="C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight", title="Select 'DeadByDaylight.exe' from your Gamefolder.", filetypes=[("DeadByDaylight .exe")])
-    if "DeadByDaylight.exe" in root.filename:
-        #paks = os.path.join((os.path.dirname(root.filename)), "DeadByDaylight\Content\Paks")
-        os.makedirs('BG')
-        fovMain()
-    else:
-        MsgBox = mbox.askquestion ('BG Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
-        if MsgBox == 'yes':
-            selectGame()
+    if not os.path.exists(dbd):
+        root.iconbitmap("C:/Users/wissm/OneDrive/Bilder/ICO/BG.ico")
+        root.filename = filedialog.askopenfilename(initialdir="C:\\", title="Select 'DeadByDaylight.exe' from your Gamefolder.", filetypes=[("DeadByDaylight .exe")])
+        if "DeadByDaylight.exe" in root.filename:
+            os.makedirs('BG')
+            fovMain()
         else:
-            cleanup()
+            MsgBox = mbox.askquestion ('BG Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
+            if MsgBox == 'yes':
+                selectGame()
+            else:
+                cleanup()
+    else:
+        fovMain()
 
 
 #FOV - Main (Working)
@@ -54,8 +57,11 @@ def fovMain():
 
 #SSL (Working)
 def pak():
-    shutil.copy2('BG\pakchunk1-WindowsNoEditor.pak', os.path.join((os.path.dirname(root.filename)), "DeadByDaylight\Content\Paks"))
-
+    if os.path.exists(dbd):
+        shutil.copy2('BG\pakchunk1-WindowsNoEditor.pak', os.path.join(dbd, "DeadByDaylight\Content\Paks"))
+    else:
+        shutil.copy2('BG\pakchunk1-WindowsNoEditor.pak', os.path.join((os.path.dirname(root.filename)), "DeadByDaylight\Content\Paks"))
+    
 
 #Install the FOV Mod. (Working)
 def fovini():
