@@ -8,4 +8,4 @@ Should you get an 'SSL error' while starting DBD, visit us on our Discord (https
 If the error occurs after updating DBD, you have to be patient for ~1-4 hours until I have saved the update in the link.
 To update SSL, all you have to do is run through the program again.
 
-This works for patch 5.0.1
+This works for patch 5.0.2
