@@ -14,7 +14,7 @@ import shutil
 ini = os.path.join(os.getenv("LOCALAPPDATA"), "DeadByDaylight\Saved\Config\WindowsNoEditor\Engine.ini")
 root = Tk()
 root.withdraw()
-discord = "https://discord.gg/xk9kJnVxTh"
+discord = "https://discord.gg/gmVkK9p9hA"
 fovlinkLoad = requests.get('https://bloodygang.serveblog.net/index.php/s/N4jQosCBL5SPWfi/download')
 dbd_folder = ("C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight")
 dbd_exe = ("C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight\DeadByDaylight.exe")
