@@ -17,7 +17,7 @@ root.withdraw()
 root.lift()
 root.attributes("-topmost", True)
 discord = "https://discord.gg/gmVkK9p9hA"
-fovlinkLoad = requests.get('https://bloodygang.serveblog.net/index.php/s/N4jQosCBL5SPWfi/download')
+fovlinkLoad = requests.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
 dbd_folder = ("C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight")
 dbd_exe = ("C:\Program Files (x86)\Steam\steamapps\common\Dead by Daylight\DeadByDaylight.exe")
 
