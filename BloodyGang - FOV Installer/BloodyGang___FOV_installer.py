@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox as mbox
 import sys
-import webbrowser as wb
 import requests
 import os
 import zipfile
@@ -15,7 +14,6 @@ import pickle
 #Define Paths
 ini = os.path.join(os.getenv("LOCALAPPDATA"), "DeadByDaylight\Saved\Config\WindowsNoEditor\Engine.ini")
 config = os.path.join(os.getenv("LOCALAPPDATA"), "Serpent Modding\BG Installer\Path")
-discord = "https://discord.gg/gmVkK9p9hA"
 fovlinkLoad = requests.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
 root = Tk()
 root.withdraw()
@@ -24,15 +22,19 @@ windowHeight = root.winfo_reqheight()
 positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
 positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 root.attributes('-topmost', True)
-root.iconbitmap("C:/Users/wissm/OneDrive/Bilder/ICO/Serpent.ico")
 
 
-#Check for saved path.
+#Check for saved path. (Working)
 def selectGame():
     global dbd_exe
     if os.path.exists(config):
         with open(config, "rb") as f:
             dbd_exe = pickle.load(f)
+        if not os.path.exists(os.path.join(dbd_exe, 'DeadByDaylight.exe')):
+            subprocess.run('cmd /c rmdir "%localappdata%\Serpent Modding" /S /Q')
+            selectGame()
+        else:
+            pass
     else:
         subprocess.run('cmd /c rmdir "%localappdata%\Serpent Modding" /S /Q')
         os.makedirs(os.path.join(os.getenv("LOCALAPPDATA"), "Serpent Modding\BG Installer"))
@@ -100,7 +102,7 @@ def cleanup():
 def dc():
     MsgBox = mbox.askquestion ('Thanks for using the "BG Installer"','Do you want to visit our DiscordServer,\nto get more awesome Hacks?',icon = 'question')
     if MsgBox == 'yes':
-        wb.open(discord)
+        subprocess.run('cmd /c explorer "https://discord.gg/gmVkK9p9hA"')
         sys.exit()
     else:
         sys.exit()
