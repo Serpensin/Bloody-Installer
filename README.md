@@ -1,7 +1,6 @@
 # DBD-SSL-Bypass-and-FOV-Installer
-With this script an SSL Bypass and FOV 'hack' can be installed for DBD.
-The FOV 'hack' ensures that you have an enlarged FOV  
-(field of view).
+With this script an SSL Bypass and FOV 'hack' can be installed for DBD.  
+The FOV 'hack' ensures that you have an enlarged FOV (field of view).
 
 The program will take about 10-20 seconds to start, so be patient.
 
