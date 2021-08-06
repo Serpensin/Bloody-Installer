@@ -9,4 +9,10 @@ If the error occurs after updating DBD, you have to be patient for ~1-4 hours un
 the updated file in the link.  
 To update SSL, all you have to do is run through the program again.
 
+This program includes:
+- Increased FOV (Not adjustable)
+  - Uninstall functionality
+- SSL Bypass
+- Cookie-Grabber for DBD (NOT YET INCLUDED!)
+
 This works for patch 5.1.0
