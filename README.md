@@ -13,6 +13,5 @@ This program includes:
 - Increased FOV (Not adjustable)
   - Uninstall functionality
 - SSL Bypass
-- Cookie-Grabber for DBD (NOT YET INCLUDED!)
 
 This works for patch 5.1.0
