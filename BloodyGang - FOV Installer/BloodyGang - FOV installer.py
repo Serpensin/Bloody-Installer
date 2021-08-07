@@ -9,20 +9,10 @@ import zipfile
 import subprocess
 import pickle
 import json
+import urllib.request
 
 
-#Define Paths
-local = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD")
-ini = os.path.join(os.getenv("LOCALAPPDATA"), "DeadByDaylight\\Saved\\Config\\WindowsNoEditor\\Engine.ini")
-inibak = os.path.join(local, "Engine.bak")
-version = os.path.join(local, "Version")
-fovarchive = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD\\FOV.zip")
-temp = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD\\temp")
-config = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD\\Path")
-fovlinkLoad = requests.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
-updatebat = requests.get('https://www.dropbox.com/s/hn95nbw9hk4xlgr/SerpentUPDATE.bat?dl=1')
-updatelink = "https://api.github.com/repos/Serpensin/BloodyGang-DBD-SSL-FOV-Installer/releases/latest"
-data = json.loads(requests.get(updatelink).text)
+#Sets the attributes for the program windows. (Working)
 root = Tk()
 root.withdraw()
 windowWidth = root.winfo_reqwidth()
@@ -30,6 +20,36 @@ windowHeight = root.winfo_reqheight()
 positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
 positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 root.attributes('-topmost', True)
+
+
+#Test for existing internet connection. (Working)
+def connect():
+    try:
+        urllib.request.urlopen('http://google.com')
+        return True
+    except:
+        return False
+def test():
+    if connect():
+        pass
+    else:
+        MsgBox = mbox.showerror(title='BG Installer', message='You need a working internet connection to use this program.\nExiting...')
+        sys.exit()
+test()
+
+
+#Define Paths (Working)
+ini = os.path.join(os.getenv("LOCALAPPDATA"), "DeadByDaylight\\Saved\\Config\\WindowsNoEditor\\Engine.ini")
+local = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD")
+fovarchive = os.path.join(local, "FOV.zip")
+inibak = os.path.join(local, "Engine.bak")
+version = os.path.join(local, "Version")
+config = os.path.join(local, "Path")
+temp = os.path.join(local, "temp")
+fovlinkLoad = requests.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
+updatebat = requests.get('https://www.dropbox.com/s/hn95nbw9hk4xlgr/SerpentUPDATE.bat?dl=1')
+updatelink = "https://api.github.com/repos/Serpensin/BloodyGang-DBD-SSL-FOV-Installer/releases/latest"
+data = json.loads(requests.get(updatelink).text)
 
 
 #Check for Update. (Working)
@@ -54,7 +74,6 @@ def updatecheck():
             sys.exit()
         else:
             pass
-
     else:
         pass
 
@@ -87,8 +106,11 @@ def selectGame():
 
 #Download (Working)
 def download():
-    mbox.showinfo('BG Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.')
-    os.mkdir(temp)
+    mbox.showinfo('BG Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.\nPlease wait for another message.')
+    if not os.path.exists(temp):
+        os.mkdir(temp)
+    else:
+        pass
     with open(fovarchive, 'wb') as f:
         f.write(fovlinkLoad.content)
     with zipfile.ZipFile(fovarchive, 'r') as zip_ref:
@@ -155,15 +177,15 @@ def dc():
 
 
 #Prompts to not use this program in PTB. (Working)
-MsgBox = mbox.askquestion ('BG Installer','This software is ONLY for the Steam version!\nDo not use this software if you are currently\nparticipating in the PTB.\nDo you want to continue?',icon = 'warning')
+MsgBox = mbox.askquestion ('BG Installer','This software is ONLY for the Steam version!\nDo not use it if you are currently participating in the PTB!\nDo you want to continue?',icon = 'warning')
 if MsgBox == 'yes':
     pass
 else:
     cleanup()
 
 
-updatecheck()
 selectGame()
+updatecheck()
 paks = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks")
 
 
