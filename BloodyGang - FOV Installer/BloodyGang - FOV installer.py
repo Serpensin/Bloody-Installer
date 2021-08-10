@@ -1,15 +1,15 @@
 #Imports
-from tkinter import *
-from tkinter import filedialog
 from tkinter import messagebox as mbox
-import sys
-import requests
-import os
-import zipfile
+from tkinter import filedialog
+from tkinter import *
 import subprocess
+import requests
+import zipfile
 import pickle
+import urllib
 import json
-import urllib.request
+import sys
+import os
 
 
 #Sets the attributes for the program windows. (Working)
@@ -23,19 +23,20 @@ root.attributes('-topmost', True)
 
 
 #Test for existing internet connection. (Working)
+os.environ['NO_PROXY'] = '.*.'
 def connect():
     try:
         urllib.request.urlopen('http://google.com')
         return True
     except:
         return False
-def test():
+def internettest():
     if connect():
         pass
     else:
         MsgBox = mbox.showerror(title='BG Installer', message='You need a working internet connection to use this program.\nExiting...')
         sys.exit()
-test()
+internettest()
 
 
 #Define Paths (Working)
