@@ -53,6 +53,34 @@ updatelink = "https://api.github.com/repos/Serpensin/BloodyGang-DBD-SSL-FOV-Inst
 data = json.loads(requests.get(updatelink).text)
 
 
+#Check for saved path. (Working)
+def selectGame():
+    global dbd_exe
+    if os.path.exists(config):
+        with open(config, "rb") as f:
+            dbd_exe = pickle.load(f)
+        if not os.path.exists(os.path.join(dbd_exe, 'DeadByDaylight.exe')):
+            os.remove(config)
+            selectGame()
+        else:
+            pass
+    else:
+        if not os.path.exists(local):
+            os.makedirs(local)
+        else:
+            pass
+        root.filename = filedialog.askopenfilename(initialdir="C:\\", title="Select 'DeadByDaylight.exe' from your Gamefolder.", filetypes=[("DeadByDaylight .exe")])
+        if "DeadByDaylight.exe" in root.filename:
+            dbd_exe = os.path.dirname(root.filename)
+            pickle.dump(dbd_exe, open(config, "wb"))
+        else:
+            MsgBox = mbox.askquestion ('BG Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
+            if MsgBox == 'yes':
+                selectGame()
+            else:
+                cleanup()
+
+
 #Check for Update. (Working)
 def updatecheck():
     terz = "Update found: "+data["tag_name"]
@@ -77,32 +105,6 @@ def updatecheck():
             pass
     else:
         pass
-
-
-#Check for saved path. (Working)
-def selectGame():
-    global dbd_exe
-    if os.path.exists(config):
-        with open(config, "rb") as f:
-            dbd_exe = pickle.load(f)
-        if not os.path.exists(os.path.join(dbd_exe, 'DeadByDaylight.exe')):
-            subprocess.run('cmd /c rmdir "%localappdata%\\SerpentModding" /S /Q')
-            selectGame()
-        else:
-            pass
-    else:
-        subprocess.run('cmd /c rmdir "%localappdata%\SerpentModding" /S /Q')
-        os.makedirs(os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD"))
-        root.filename = filedialog.askopenfilename(initialdir="C:\\", title="Select 'DeadByDaylight.exe' from your Gamefolder.", filetypes=[("DeadByDaylight .exe")])
-        if "DeadByDaylight.exe" in root.filename:
-            dbd_exe = os.path.dirname(root.filename)
-            pickle.dump(dbd_exe, open(config, "wb"))
-        else:
-            MsgBox = mbox.askquestion ('BG Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
-            if MsgBox == 'yes':
-                selectGame()
-            else:
-                cleanup()
 
 
 #Download (Working)
