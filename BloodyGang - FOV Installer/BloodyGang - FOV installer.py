@@ -114,7 +114,7 @@ def updatecheck():
         current = "v1.2.3"
         pickle.dump(current, open(version, "wb"))
     if current < data["tag_name"]:
-        MsgBox = mbox.askquestion (terz,data["body"],icon = 'question')
+        MsgBox = mbox.askquestion (terz,'Program will auto restart after update!\n'+data["body"],icon = 'question')
         if MsgBox == 'yes':
             with open("SerpentUPDATE.bat", 'wb') as f:
                 f.write(updatebat.content)
