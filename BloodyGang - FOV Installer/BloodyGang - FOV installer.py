@@ -31,9 +31,7 @@ def connect():
     except:
         return False
 def internettest():
-    if connect():
-        pass
-    else:
+    if not connect():
         MsgBox = mbox.showerror(title='BG Installer', message='You need a working internet connection to use this program.\nExiting...')
         sys.exit()
 internettest()
@@ -47,6 +45,8 @@ inibak = os.path.join(local, "Engine.bak")
 version = os.path.join(local, "Version")
 config = os.path.join(local, "Path")
 temp = os.path.join(local, "temp")
+motd = os.path.join(local, "temp\\motd.txt")
+motdlink = requests.get('https://www.dropbox.com/s/h8w9sd96xxd8fgn/motd.txt?dl=1')
 fovlinkLoad = requests.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
 updatebat = requests.get('https://www.dropbox.com/s/hn95nbw9hk4xlgr/SerpentUPDATE.bat?dl=1')
 updatelink = "https://api.github.com/repos/Serpensin/BloodyGang-DBD-SSL-FOV-Installer/releases/latest"
@@ -62,13 +62,9 @@ def selectGame():
         if not os.path.exists(os.path.join(dbd_exe, 'DeadByDaylight.exe')):
             os.remove(config)
             selectGame()
-        else:
-            pass
     else:
         if not os.path.exists(local):
             os.makedirs(local)
-        else:
-            pass
         root.filename = filedialog.askopenfilename(initialdir="C:\\", title="Select 'DeadByDaylight.exe' from your Gamefolder.", filetypes=[("DeadByDaylight .exe")])
         if "DeadByDaylight.exe" in root.filename:
             dbd_exe = os.path.dirname(root.filename)
@@ -79,6 +75,20 @@ def selectGame():
                 selectGame()
             else:
                 cleanup()
+
+
+#Checks for messages from the dev. (Working)
+def announcement():
+    if not os.path.exists(temp):
+        os.mkdir(temp)
+    with open(motd, 'wb') as f:
+        f.write(motdlink.content)
+    md = open(motd, 'r')
+    if os.stat(motd).st_size != 0:
+        mbox.showinfo('BG Installer',md.read())
+    else:
+        print('Empty')
+    md.close()
 
 
 #Check for Update. (Working)
@@ -101,19 +111,11 @@ def updatecheck():
                 pickle.dump(data["tag_name"], open(version, "wb"))
             subprocess.Popen("SerpentUPDATE.bat")
             sys.exit()
-        else:
-            pass
-    else:
-        pass
 
 
 #Download (Working)
 def download():
     mbox.showinfo('BG Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.\nPlease wait for another message.')
-    if not os.path.exists(temp):
-        os.mkdir(temp)
-    else:
-        pass
     with open(fovarchive, 'wb') as f:
         f.write(fovlinkLoad.content)
     with zipfile.ZipFile(fovarchive, 'r') as zip_ref:
@@ -123,9 +125,7 @@ def download():
 #Install the SSL Bypass. (Working)
 def pak():
     pak = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD\\temp\\pakchunk1-WindowsNoEditor.pak")
-    if os.path.exists(fovarchive):
-        pass
-    else:
+    if not os.path.exists(fovarchive):
         download()
     subprocess.run('cmd /c copy /Y "'+pak + '" "' +paks+'"')
     mbox.showinfo('BG Installer','The installation was successful!')
@@ -133,9 +133,7 @@ def pak():
 
 #Install the FOV Mod. (Working)
 def fovini():
-    if os.path.exists(fovarchive):
-        pass
-    else:
+    if not os.path.exists(fovarchive):
         download()
     subprocess.run('cmd /c attrib -R  "'+ini + '"')
     if os.path.exists(inibak):
@@ -160,9 +158,10 @@ def fovUninstall():
         subprocess.run('cmd /c attrib -R  "'+ini + '"')
         subprocess.run('cmd /c copy /Y "'+inibak + '" "' +ini+'"')
         subprocess.run('cmd /c attrib +R  "'+ini + '"')
-        mbox.showinfo('BG Installer','The FOV hack is now removed!')
     else:
-        subprocess.run('cmd /c attrib +R  "'+inibak + '"')
+        subprocess.run('cmd /c attrib -R  "'+ini + '"')
+        subprocess.run('cmd /c del /Q  "'+ini + '"')
+    mbox.showinfo('BG Installer','The FOV hack is now removed!')
 
 
 #Cleanup (Working)
@@ -184,13 +183,12 @@ def dc():
 
 #Prompts to not use this program in PTB. (Working)
 MsgBox = mbox.askquestion ('BG Installer','This software is ONLY for the Steam version!\nDo not use it if you are currently participating in the PTB!\nDo you want to continue?',icon = 'warning')
-if MsgBox == 'yes':
-    pass
-else:
+if not MsgBox == 'yes':
     cleanup()
 
 
 selectGame()
+announcement()
 updatecheck()
 paks = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks")
 
@@ -210,5 +208,4 @@ root.configure(background='#FFFFFF')
 root.resizable(0,0)
 root.overrideredirect(1)
 root.mainloop()
-
 
