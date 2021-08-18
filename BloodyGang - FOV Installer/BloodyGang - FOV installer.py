@@ -156,10 +156,13 @@ def fovini():
 
 #FOV Uninstall (Working)
 def fovUninstall():
-    subprocess.run('cmd /c attrib -R  "'+ini + '"')
-    subprocess.run('cmd /c copy /Y "'+inibak + '" "' +ini+'"')
-    subprocess.run('cmd /c attrib +R  "'+ini + '"')
-    mbox.showinfo('BG Installer','The FOV hack is now removed!')
+    if os.path.exists(inibak):
+        subprocess.run('cmd /c attrib -R  "'+ini + '"')
+        subprocess.run('cmd /c copy /Y "'+inibak + '" "' +ini+'"')
+        subprocess.run('cmd /c attrib +R  "'+ini + '"')
+        mbox.showinfo('BG Installer','The FOV hack is now removed!')
+    else:
+        subprocess.run('cmd /c attrib +R  "'+inibak + '"')
 
 
 #Cleanup (Working)
