@@ -53,6 +53,20 @@ updatelink = "https://api.github.com/repos/Serpensin/BloodyGang-DBD-SSL-FOV-Inst
 data = json.loads(requests.get(updatelink).text)
 
 
+#Checks for messages from the dev. (Working)
+def announcement():
+    if not os.path.exists(temp):
+        os.mkdir(temp)
+    with open(motd, 'wb') as f:
+        f.write(motdlink.content)
+    md = open(motd, 'r')
+    if os.stat(motd).st_size != 0:
+        mbox.showinfo('BG Installer',md.read())
+    else:
+        print('Empty')
+    md.close()
+
+
 #Check for saved path. (Working)
 def selectGame():
     global dbd_exe
