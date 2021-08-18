@@ -100,8 +100,6 @@ def announcement():
     md = open(motd, 'r')
     if os.stat(motd).st_size != 0:
         mbox.showinfo('BG Installer',md.read())
-    else:
-        print('Empty')
     md.close()
 
 
