@@ -366,3 +366,6 @@ FodyWeavers.xsd
 *.bat
 /BloodyGang - FOV Installer/BloodyGang___FOV_installer.build
 /BloodyGang - FOV Installer/python37.dll
+/BloodyGang - FOV Installer/BloodyGang - FOV installer.build
+/BloodyGang - FOV Installer/BloodyGang - FOV installer.dist
+/BloodyGang - FOV Installer/BloodyGang - FOV installer.onefile-build
