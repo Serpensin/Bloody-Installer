@@ -16,6 +16,3 @@ This program includes:
 
 This works for patch 5.1.1
 
-Please note that some users currently have problems starting DBD when they have installed the FOV hack.
-If you have this problem, you have to verify your files in Steam.
-I will delete this message as soon as I find a solution to the problem.
