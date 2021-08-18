@@ -111,7 +111,7 @@ def updatecheck():
         with open(version, "rb") as f:
             current = pickle.load(f)
     else:
-        current = "v1.2"
+        current = "v1.2.3"
         pickle.dump(current, open(version, "wb"))
     if current < data["tag_name"]:
         MsgBox = mbox.askquestion (terz,data["body"],icon = 'question')
