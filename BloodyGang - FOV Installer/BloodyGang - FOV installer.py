@@ -22,11 +22,11 @@ from threading import _start_new_thread as th
 #Define Paths and attributes. (Working)
 root = Tk()
 root.withdraw()
-windowWidth = root.winfo_reqwidth()
-windowHeight = root.winfo_reqheight()
-positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
-positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
-root.attributes('-topmost', True)
+#windowWidth = root.winfo_reqwidth()
+#windowHeight = root.winfo_reqheight()
+#positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
+#positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
+#root.attributes('-topmost', True)
 local = os.path.join(os.getenv("LOCALAPPDATA"), "SerpentModding\\DBD")
 temp = os.path.join(local, "temp")
 fovarchive = os.path.join(local, "temp\\FOV.zip")
@@ -249,13 +249,46 @@ Button(root, text='X', fg='#ffffff', bg='#FE2E2E', font=('arial', 12, 'bold'), c
 #This is the section of code which creates the main window. (Working)
 ready = 1
 th(internettest)
-root.deiconify()
-root.geometry("+{}+{}".format(positionRight, positionDown))
-root.geometry('220x150')
-root.configure(background='#23272a')
-root.resizable(0,0)
-root.overrideredirect(1)
-root.mainloop()
+#root.deiconify()
+#root.geometry("+{}+{}".format(positionRight, positionDown))
+#root.geometry('220x150')
+#root.configure(background='#23272a')
+#root.resizable(0,0)
+#root.overrideredirect(1)
+#root.mainloop()
 
 
+class App:
+    def __init__(self, root):
+        #setting title
+        root.title("")
+        #setting window size
+        width=577
+        height=374
+        screenwidth = root.winfo_screenwidth()
+        screenheight = root.winfo_screenheight()
+        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
+        root.geometry(alignstr)
+        root.resizable(width=False, height=False)
+        root.configure(bg='#23272a')
+        root.attributes('-topmost', True)
+        root.protocol("WM_DELETE_WINDOW", cleanup)
 
+        GButton_805=tk.Button(root)
+        GButton_805["bg"] = "#efefef"
+        ft = tkFont.Font(family='Times',size=10)
+        GButton_805["font"] = ft
+        GButton_805["fg"] = "#000000"
+        GButton_805["justify"] = "center"
+        GButton_805["text"] = "Button"
+        GButton_805.place(x=200,y=150,width=108,height=48)
+        GButton_805["command"] = self.GButton_805_command
+    
+
+    def GButton_805_command(self):
+        print("command")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = App(root)
+    root.mainloop()
