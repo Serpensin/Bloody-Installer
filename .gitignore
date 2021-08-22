@@ -369,3 +369,4 @@ FodyWeavers.xsd
 /BloodyGang - FOV Installer/BloodyGang - FOV installer.build
 /BloodyGang - FOV Installer/BloodyGang - FOV installer.dist
 /BloodyGang - FOV Installer/BloodyGang - FOV installer.onefile-build
+*.pak
