@@ -16,7 +16,7 @@ import sys
 import os
 import webbrowser as wb
 import shutil
-from threading import _start_new_thread as th
+
 
 
 #Define Paths and attributes. (Working)
@@ -42,7 +42,7 @@ def cleanup():
     if not 'crash' in globals():
         dc()
     else:
-        mbox.showerror(title='BG Installer', message='You need a working internet connection to use this program.\nExiting...')
+        mbox.showerror(title='Bloody Installer', message='You need a working internet connection to use this program.\nExiting...')
         sys.exit()
 
 
@@ -82,7 +82,7 @@ def announcement():
         f.write(motdlink.content)
     md = open(motd, 'r')
     if os.stat(motd).st_size != 0:
-        mbox.showinfo('BG Installer',md.read())
+        mbox.showinfo('Bloody Installer',md.read())
     else:
         print('Empty')
     md.close()
@@ -106,7 +106,7 @@ def selectGame():
             dbd_exe = os.path.dirname(root.filename)
             pickle.dump(dbd_exe, open(config, "wb"))
         else:
-            MsgBox = mbox.askquestion ('BG Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
+            MsgBox = mbox.askquestion ('Bloody Installer','You need to select "DeadByDaylight.exe" to use this Installer. Retry?',icon = 'warning')
             if MsgBox == 'yes':
                 selectGame()
             else:
@@ -123,7 +123,7 @@ def announcement():
         f.write(motdlink.content)
     md = open(motd, 'r')
     if os.stat(motd).st_size != 0:
-        mbox.showinfo('BG Installer',md.read())
+        mbox.showinfo('Bloody Installer',md.read())
     md.close()
 
 
@@ -156,7 +156,7 @@ def updatecheck():
 
 #Download
 def download():
-    mbox.showinfo('BG Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.\nPlease wait for another message.')
+    mbox.showinfo('Bloody Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.\nPlease wait for another message.')
     fovlinkLoad = r.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
     with open(os.path.join(local, "temp\\FOV.zip"), 'wb') as f:
         f.write(fovlinkLoad.content)
@@ -172,7 +172,7 @@ def pak():
         download()
     shutil.copy2(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"), pakbak)
     shutil.copy2(pak, paks)
-    mbox.showinfo('BG Installer','The installation was successful!')
+    mbox.showinfo('Bloody Installer','The installation was successful!')
     
 
 #Install the FOV Mod.
@@ -180,7 +180,7 @@ def fovini():
     if os.path.exists(ini):
         os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
     else:
-        mbox.showerror('BG Installer','Engine.ini not found!\nPlease start your game once.\nExiting...')
+        mbox.showerror('Bloody Installer','Engine.ini not found!\nPlease start your game once.\nExiting...')
         sys.exit()
     if not os.path.exists(fovarchive):
             download()
@@ -214,12 +214,12 @@ def uninstall():
     if os.path.exists(pakbak):
         shutil.copy2(pakbak, os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"))
         os.remove(pakbak)
-    mbox.showinfo('BG Installer','All hacks are removed!\nYou can now use our other tools.')
+    mbox.showinfo('Bloody Installer','All hacks are removed!\nYou can now use our other tools.')
 
 
 #Asks to visit our Discord. (Working)
 def dc():
-    MsgBox = mbox.askquestion ('Thanks for using the "BG Installer"','Do you want to visit our DiscordServer,\nto get more awesome Hacks?',icon = 'question')
+    MsgBox = mbox.askquestion ('Thanks for using the "Bloody Installer"','Do you want to visit our DiscordServer,\nto get more awesome Hacks?',icon = 'question')
     if MsgBox == 'yes':
         wb.open("https://discord.gg/gmVkK9p9hA", 0)
         sys.exit()
@@ -228,7 +228,7 @@ def dc():
 
 
 #Prompts to not use this program in PTB. (Working)
-MsgBox = mbox.askquestion ('BG Installer','This software is ONLY for the Steam version!\nDo not use it if you are currently participating in the PTB!\nDo you want to continue?',icon = 'warning')
+MsgBox = mbox.askquestion ('Bloody Installer','This software is ONLY for the Steam version!\nDo not use it if you are currently participating in the PTB!\nDo you want to continue?',icon = 'warning')
 if not MsgBox == 'yes':
     cleanup()
 
@@ -237,31 +237,20 @@ selectGame()
 announcement()
 updatecheck()
 paks = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks")
+ready = 1
 
 
-#Buttons (Working)
-Button(root, text='Uninstall FOV/SSL', fg='#ffffff', bg='#b8860b', font=('Microsoft Sans Serif', 12, 'normal',), command=uninstall).place(x=36, y=100)
-Button(root, text='Install FOV', fg='#ffffff', bg='#b8860b', font=('Microsoft Sans Serif', 12, 'normal'), command=fovini).place(x=13, y=55)
-Button(root, text='Install SSL', fg='#ffffff', bg='#b8860b', font=('Microsoft Sans Serif', 12, 'normal'), command=pak).place(x=116, y=55)
-Button(root, text='X', fg='#ffffff', bg='#FE2E2E', font=('arial', 12, 'bold'), command=cleanup).place(x=181, y=8)
+
+
+
+
 
 
 #This is the section of code which creates the main window. (Working)
-ready = 1
-th(internettest)
-#root.deiconify()
-#root.geometry("+{}+{}".format(positionRight, positionDown))
-#root.geometry('220x150')
-#root.configure(background='#23272a')
-#root.resizable(0,0)
-#root.overrideredirect(1)
-#root.mainloop()
-
-
 class App:
     def __init__(self, root):
         #setting title
-        root.title("")
+        root.title("Bloody Installer")
         #setting window size
         width=577
         height=374
@@ -271,7 +260,7 @@ class App:
         root.geometry(alignstr)
         root.resizable(width=False, height=False)
         root.configure(bg='#23272a')
-        root.attributes('-topmost', True)
+        root.wm_attributes('-type', 'splash')
         root.protocol("WM_DELETE_WINDOW", cleanup)
 
         GButton_805=tk.Button(root)
@@ -280,13 +269,13 @@ class App:
         GButton_805["font"] = ft
         GButton_805["fg"] = "#000000"
         GButton_805["justify"] = "center"
-        GButton_805["text"] = "Button"
+        GButton_805["text"] = "Uninstall FOV/SSL"
         GButton_805.place(x=200,y=150,width=108,height=48)
         GButton_805["command"] = self.GButton_805_command
     
 
     def GButton_805_command(self):
-        print("command")
+        uninstall()
 
 if __name__ == "__main__":
     root = tk.Tk()
