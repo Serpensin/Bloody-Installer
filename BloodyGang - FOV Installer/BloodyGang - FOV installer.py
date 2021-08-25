@@ -18,7 +18,6 @@ import webbrowser as wb
 import shutil
 
 
-
 #Define Paths and attributes. (Working)
 root = Tk()
 root.withdraw()
@@ -240,44 +239,3 @@ paks = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks")
 ready = 1
 
 
-
-
-
-
-
-
-#This is the section of code which creates the main window. (Working)
-class App:
-    def __init__(self, root):
-        #setting title
-        root.title("Bloody Installer")
-        #setting window size
-        width=577
-        height=374
-        screenwidth = root.winfo_screenwidth()
-        screenheight = root.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        root.geometry(alignstr)
-        root.resizable(width=False, height=False)
-        root.configure(bg='#23272a')
-        root.wm_attributes('-type', 'splash')
-        root.protocol("WM_DELETE_WINDOW", cleanup)
-
-        GButton_805=tk.Button(root)
-        GButton_805["bg"] = "#efefef"
-        ft = tkFont.Font(family='Times',size=10)
-        GButton_805["font"] = ft
-        GButton_805["fg"] = "#000000"
-        GButton_805["justify"] = "center"
-        GButton_805["text"] = "Uninstall FOV/SSL"
-        GButton_805.place(x=200,y=150,width=108,height=48)
-        GButton_805["command"] = self.GButton_805_command
-    
-
-    def GButton_805_command(self):
-        uninstall()
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
