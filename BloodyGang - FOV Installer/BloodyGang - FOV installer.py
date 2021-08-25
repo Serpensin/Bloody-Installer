@@ -18,7 +18,7 @@ import shutil
 import socket
 import bloody_installer_gui_support
 import base64
-
+import hashlib
 
 
 #Define Paths and attributes. (Working)
@@ -30,6 +30,12 @@ temp = os.path.join(local, "temp")
 fovarchive = os.path.join(local, "temp\\FOV.zip")
 inibak = os.path.join(local, "Engine.bak")
 ini = os.path.join(os.getenv("LOCALAPPDATA"), "DeadByDaylight\\Saved\\Config\\WindowsNoEditor\\Engine.ini")
+ssl = os.path.join(local, "temp\\pakchunk1-WindowsNoEditor.pak")
+
+
+#Deletes the temp folder if its left over because of a crash. (Working)
+if os.path.exists(temp):
+    shutil.rmtree(temp)
 
 
 img = """
@@ -7648,6 +7654,16 @@ def announcement():
     md.close()
 
 
+#Can generate a md5 hash and save it to global md5. (Working)
+def hash(self):
+    global md5
+    md5_hash = hashlib.md5()
+    a_file = open(self, "rb")
+    content = a_file.read()
+    md5_hash.update(content)
+    md5 = md5_hash.hexdigest()
+
+
 #Check for Update. (Working)
 def updatecheck():
     updatebat = r.get('https://www.dropbox.com/s/hn95nbw9hk4xlgr/SerpentUPDATE.bat?dl=1')
@@ -7661,7 +7677,7 @@ def updatecheck():
         with open(version, "rb") as f:
             current = pickle.load(f)
     else:
-        current = "v1.2.3"
+        current = "v2.0.0"
         pickle.dump(current, open(version, "wb"))
     if current < data["tag_name"]:
         MsgBox = mbox.askquestion (terz,'Program will auto restart after update!\n'+data["body"],icon = 'question')
@@ -7675,29 +7691,34 @@ def updatecheck():
             sys.exit()
 
 
-#Download
-def download():
+#Download the FOV/SSL. (Working)
+def download(self):
+    if not os.path.exists(temp):
+        os.mkdir(temp)
     mbox.showinfo('Bloody Installer','The program will now download\nthe required archive (~100MB).\nThis can take a few seconds.\nPlease wait for another message.')
-    fovlinkLoad = r.get('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
-    with open(os.path.join(local, "temp\\FOV.zip"), 'wb') as f:
+    fovlinkLoad = r.get(self)
+    with open(fovarchive, 'wb') as f:
         f.write(fovlinkLoad.content)
     with zf.ZipFile(fovarchive, 'r') as zip_ref:
         zip_ref.extractall(temp)
 
 
-#Install the SSL Bypass.
+#Install the SSL Bypass. (Working)
 def pak():
-    pak = os.path.join(local, "temp\\pakchunk1-WindowsNoEditor.pak")
     pakbak = os.path.join(local, "pakchunk1-WindowsNoEditor.bak")
     if not os.path.exists(fovarchive):
-        download()
-    shutil.copy2(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"), pakbak)
-    shutil.copy2(pak, paks)
+        download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
+    shutil.copy(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"), pakbak)
+    shutil.copy2(ssl, paks)
+    if remove == 1:
+        return
     mbox.showinfo('Bloody Installer','The installation was successful!')
     
 
 #Install the FOV Mod. (Working)
 def fovini():
+    global remove
+    remove = 0
     if os.path.exists(ini):
         os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
     else:
@@ -7705,7 +7726,7 @@ def fovini():
         mbox.showerror('Bloody Installer','Engine.ini not found!\nPlease start your game once.\nExiting...')
         sys.exit()
     if not os.path.exists(fovarchive):
-            download()
+            download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
     if os.path.exists(inibak):
         shutil.copy2(inibak, ini)
     shutil.copy2(ini, inibak)
@@ -7722,9 +7743,11 @@ def fovini():
     pak()
 
 
-#Uninstall
+#Uninstall FOV/SSL. (Working)
 def uninstall():
+    global remove
     pakbak = os.path.join(local, "pakchunk1-WindowsNoEditor.bak")
+    gamepak = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks\\pakchunk1-WindowsNoEditor.pak")
     if os.path.exists(inibak):
         os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
         shutil.copy2(inibak, ini)
@@ -7734,9 +7757,48 @@ def uninstall():
             os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
             os.remove(ini)
     if os.path.exists(pakbak):
-        shutil.copy2(pakbak, os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"))
+        hash(pakbak)
+        hashlink = r.get('https://www.dropbox.com/s/05isao2gla9k6e2/md5hash.txt?dl=1')
+        hashtxt = os.path.join(local, "temp\\hash.txt")
+        if not os.path.exists(temp):
+            os.mkdir(temp)
+        with open(hashtxt, 'wb') as f:
+            f.write(hashlink.content)
+        md = open(hashtxt, 'r')
+        if md5 == md.read():
+            shutil.copy2(pakbak, gamepak)
+            md.close()
         os.remove(pakbak)
-    mbox.showinfo('Bloody Installer','All hacks are removed!\nYou can now use our other tools.')
+        md.close()
+    else:
+        if os.path.exists(gamepak):
+            hash(gamepak)
+            hashlink = r.get('https://www.dropbox.com/s/05isao2gla9k6e2/md5hash.txt?dl=1')
+            hashtxt = os.path.join(local, "temp\\hash.txt")
+            if not os.path.exists(temp):
+                os.mkdir(temp)
+            with open(hashtxt, 'wb') as f:
+                f.write(hashlink.content)
+            md = open(hashtxt, 'r')
+            cleanhash = md.read()
+            print(cleanhash)
+            print(md5)
+            if md5 != cleanhash:
+                MsgBox = mbox.askquestion ('Bloody Installer','Could not find a backup for pakchunk1!\nDo you want to download a clean one?',icon = 'warning')
+                if MsgBox == 'yes':
+                    if os.path.exists(ssl):
+                        os.remove(ssl)
+                    if os.path.exists(fovarchive):
+                        os.remove(fovarchive)
+                    download('https://www.dropbox.com/s/k9wzb714tumsfmu/pakchunk.zip?dl=1')
+                    remove = 1
+                    pak()
+                    md.close()
+                else:
+                    mbox.showerror(title='Bloody Installer', message="Couldn't remove your hacks!\nPlease retry and allow the download!")
+                    return
+        md.close()
+    mbox.showinfo('Bloody Installer','All hacks are now removed!\nYou can now use our other tools.')
 
 
 #Asks to visit our Discord. (Working)
@@ -7759,12 +7821,9 @@ selectGame()
 announcement()
 updatecheck()
 paks = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks")
-ready = 1
 
 
-
-
-#This is the section of code which creates the main window.
+#This is the section of code which creates the main window. (Working)
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
