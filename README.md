@@ -1,4 +1,4 @@
-# DBD-SSL-Bypass-and-FOV-Installer
+# Bloody Installer
 With this script an SSL Bypass and FOV 'hack' can be installed for DBD.  
 The FOV 'hack' ensures that you have an enlarged FOV (field of view).
 
