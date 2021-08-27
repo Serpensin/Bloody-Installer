@@ -12,8 +12,9 @@ To update, all you have to do is press the button again.
 
 This program includes:
 - Increased FOV (Not adjustable)
-  - Uninstall functionality
 - SSL Bypass
+- Uninstall functionality for FOV/SSL
+  (Even if you didn't install them with this program.)
 
 This works for patch 5.1.1
 
