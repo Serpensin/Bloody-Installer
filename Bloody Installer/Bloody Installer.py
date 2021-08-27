@@ -1,24 +1,24 @@
 #Imports
-from tkinter import messagebox as mbox
-from tkinter import filedialog
-import tkinter.ttk as ttk
-import tkinter as tk
-from subprocess import Popen
 from stat import FILE_ATTRIBUTE_READONLY
 from stat import FILE_ATTRIBUTE_NORMAL
+from tkinter import messagebox as mbox
+import bloody_installer_gui_support
+from tkinter import filedialog
+from subprocess import Popen
+import tkinter.ttk as ttk
+import webbrowser as wb
+import tkinter as tk
 import requests as r
 import zipfile as zf
-import pickle
+import hashlib
 import urllib
+import pickle
+import base64
+import shutil
+import socket
 import json
 import sys
 import os
-import webbrowser as wb
-import shutil
-import socket
-import bloody_installer_gui_support
-import base64
-import hashlib
 
 
 #Define Paths and attributes. (Working)
