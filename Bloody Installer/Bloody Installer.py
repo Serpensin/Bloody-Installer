@@ -7752,6 +7752,7 @@ def uninstall():
         os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
         shutil.copy2(inibak, ini)
         os.chmod(ini, FILE_ATTRIBUTE_READONLY)
+        os.remove(inibak)
     else:
         if os.path.exists(ini):
             os.chmod(ini, FILE_ATTRIBUTE_NORMAL)
@@ -7781,8 +7782,6 @@ def uninstall():
                 f.write(hashlink.content)
             md = open(hashtxt, 'r')
             cleanhash = md.read()
-            print(cleanhash)
-            print(md5)
             if md5 != cleanhash:
                 MsgBox = mbox.askquestion ('Bloody Installer','Could not find a backup for pakchunk1!\nDo you want to download a clean one?',icon = 'warning')
                 if MsgBox == 'yes':
