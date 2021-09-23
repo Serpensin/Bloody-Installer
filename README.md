@@ -16,4 +16,4 @@ This program includes:
 - Uninstall functionality for FOV/SSL
   (Even if you didn't install them with this program.)
 
-This works for patch 5.2.1
+This works for patch 5.2.2
