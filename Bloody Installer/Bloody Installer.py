@@ -7707,11 +7707,18 @@ def download(self):
 def pak():
     pakbak = os.path.join(local, "pakchunk1-WindowsNoEditor.bak")
     if not os.path.exists(fovarchive):
-        download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
-    shutil.copy(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"), pakbak)
+        download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')        
+    hash(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"))
+    hashlink = r.get('https://www.dropbox.com/s/05isao2gla9k6e2/md5hash.txt?dl=1')
+    if not os.path.exists(temp):
+        os.mkdir(temp)
+    hashtxt = os.path.join(local, "temp\\hash.txt")
+    with open(hashtxt, 'wb') as f:
+        f.write(hashlink.content)
+    md = open(hashtxt, 'r')
+    if md5 == md.read():
+        shutil.copy(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"), pakbak)
     shutil.copy2(ssl, paks)
-    if remove == 1:
-        return
     mbox.showinfo('Bloody Installer','The installation was successful!')
     
 
@@ -7724,6 +7731,8 @@ def fovini():
     else:
         root.destroy()
         mbox.showerror('Bloody Installer','Engine.ini not found!\nPlease start your game once.\nExiting...')
+        if os.path.exists(temp):
+            shutil.rmtree(temp)
         sys.exit()
     if not os.path.exists(fovarchive):
             download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')
@@ -7746,6 +7755,7 @@ def fovini():
 #Uninstall FOV/SSL. (Working)
 def uninstall():
     global remove
+    remove = 0
     pakbak = os.path.join(local, "pakchunk1-WindowsNoEditor.bak")
     gamepak = os.path.join(dbd_exe, "DeadByDaylight\\Content\\Paks\\pakchunk1-WindowsNoEditor.pak")
     if os.path.exists(inibak):
@@ -7790,12 +7800,27 @@ def uninstall():
                     if os.path.exists(fovarchive):
                         os.remove(fovarchive)
                     download('https://www.dropbox.com/s/k9wzb714tumsfmu/pakchunk.zip?dl=1')
-                    remove = 1
-                    pak()
-                    md.close()
+                    pakbak = os.path.join(local, "pakchunk1-WindowsNoEditor.bak")
+                    if not os.path.exists(fovarchive):
+                        download('https://www.dropbox.com/s/c9f70odtisxyz6m/FOV.zip?dl=1')        
+                    hash(os.path.join(paks, "pakchunk1-WindowsNoEditor.pak"))
+                    hashlink = r.get('https://www.dropbox.com/s/05isao2gla9k6e2/md5hash.txt?dl=1')
+                    if not os.path.exists(temp):
+                        os.mkdir(temp)
+                    hashtxt = os.path.join(local, "temp\\hash.txt")
+                    with open(hashtxt, 'wb') as f:
+                        f.write(hashlink.content)
+                    md = open(hashtxt, 'r')
+                    if md5 == md.read():
+                        shutil.copy2(ssl, paks)
                 else:
                     mbox.showerror(title='Bloody Installer', message="Couldn't remove your hacks!\nPlease retry and allow the download!")
                     return
+        if os.path.exists(pakbak):
+            hash(pakbak)
+            if md5 != cleanhash:
+                mbox.showinfo('Fail','Uninstall rerun')
+                uninstall()
         md.close()
     mbox.showinfo('Bloody Installer','All hacks are now removed!\nYou can now use our other tools.')
 
