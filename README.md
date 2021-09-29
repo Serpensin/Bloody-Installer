@@ -17,5 +17,3 @@ This program includes:
   (Even if you didn't install them with this program.)
 
 This works for patch 5.2.2
-
-#TEST
